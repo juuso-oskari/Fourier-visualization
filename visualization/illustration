@@ -1,0 +1,44 @@
+let f=0 //Hz
+let time=0;
+let trace=[];
+let centerOfMass={
+  x:0,
+  y:0
+}
+
+function setup() {
+  createCanvas(1200,400);
+}
+
+function draw(){
+  background(0);
+  translate(200,200);
+  while(time<=6.28){
+    let radius = 100;
+    stroke(255);
+    noFill();
+    ellipse(0,0, radius*2);
+    let signal=cos(4*time);
+    let tracePoint={
+      x : signal*radius*cos(f*time),
+      y : signal*radius*sin(f*time),
+    }
+    trace.unshift(tracePoint);
+    let x = radius*cos(f*time);
+    let y = radius*sin(f*time);
+    
+    document.getElementById("demo").innerHTML = centerOfMass.y; //write here what you want to debug
+    time+=0.01;  
+  }
+  time=0;
+  for (let i = 0;i<trace.length;i++){
+    point(trace[i].x,trace[i].y);
+    centerOfMass.x+=trace[i].x/trace.length; centerOfMass.y+=trace[i].y/trace.length;
+  }
+  fill(255);
+  ellipse(centerOfMass.x,centerOfMass.y,8);
+  centerOfMass.x=0;centerOfMass.y=0;
+  trace=[];
+  f+=0.01;
+}
+
